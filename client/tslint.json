@@ -38,21 +38,12 @@
         "no-console": false,
         "no-magic-numbers": false,
         "only-arrow-functions": false,
-        "typedef": [
-            true,
-            "call-signature",
-            // "arrow-call-signature",
-            "parameter",
-            "arrow-parameter",
-            "property-declaration",
-            // "variable-declaration",
-            "member-variable-declaration"
-            // "object-destructuring",
-            // "array-destructuring"
-        ],
+        "typedef": false,
         "no-non-null-assertion": false,
         "no-this-assignment": false,
         "no-bitwise": false,
-        "align": false
+        "align": false,
+        "arrow-parens": false,
+        "no-null-keyword": false
     }
 }

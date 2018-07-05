@@ -12,8 +12,7 @@ import { getActions } from './rgx'
     console.log('Listening')
 
     const texts = await getText()
-    const data: any = getActions(texts)
-    console.log(texts.length, data)
+    const data = getActions(texts)
 
     app.get('/api/get', (req: Request, res: Response) => res.json(data))
 })()

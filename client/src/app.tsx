@@ -1,20 +1,30 @@
 import axios from 'axios'
+import _, { LoDashStatic } from 'lodash'
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom'
 
-interface IAction {
-    action: string
-    amount: string
-    balance: string
+declare global {
+    // tslint:disable-next-line:interface-name
+    interface Window {
+        _: LoDashStatic
+        data: IOperation[]
+    }
+}
+
+window._ = _
+
+interface IOperation {
     card: string
     datetime: string
+    operationType: string
+    amount: number
+    currency: string
     place: string
-    isEmpty: boolean
-    raw: string
+    balance: number
 }
 
 interface IState {
-    data: IAction[]
+    data: IOperation[]
 }
 
 class Main extends React.Component<{}, IState> {
@@ -23,8 +33,9 @@ class Main extends React.Component<{}, IState> {
     }
 
     public async componentDidMount(): Promise<void> {
-        const { data }: { data: IAction[] } = await axios.get('/api/get')
+        const { data }: { data: IOperation[] } = await axios.get('/api/get')
         this.setState((s: IState) => ({...s, data}))
+        window.data = data
     }
     public render(): ReactNode {
         return (
@@ -32,10 +43,15 @@ class Main extends React.Component<{}, IState> {
                 <table>
                     <tbody>
                         {
-                            this.state.data.map((item: IAction, i: number) => (
+                            this.state.data.map((item: IOperation, i: number) => (
                                 <tr key={i}>
-                                    <td>{item.balance}</td>
+                                    <td>{item.datetime}</td>
                                     <td>{item.card}</td>
+                                    <td>{item.operationType}</td>
+                                    <td>{item.amount}</td>
+                                    <td>{item.currency}</td>
+                                    <td>{item.place}</td>
+                                    <td>{item.balance}</td>
                                 </tr>
                             ))
                         }
