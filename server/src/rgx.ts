@@ -3,12 +3,12 @@ import XRegExp from 'xregexp'
 
 import { operationTypes, rCardStuffBalance, rStuff } from './rgxData'
 
-type RawOperation = Record<'card' | 'datetime' | 'operationType' |
+type RawOperation = Record<'card' | 'datetimeStr' | 'operationType' |
 'baseAmount' | 'currency' | 'tax' | 'place' | 'balance' | 'input', string>
 
 interface IOperation {
     card: string
-    datetime: string
+    datetimeStr: string
     operationType: string
     amount: number
     currency: string
@@ -27,7 +27,7 @@ export function getActions(allData: string[]): IOperation[] {
         .map(s => pick(
             s,
             [
-                'card', 'datetime', 'operationType', 'baseAmount',
+                'card', 'datetimeStr', 'operationType', 'baseAmount',
                 'currency', 'tax', 'place', 'balance', 'input',
             ],
         ) as RawOperation)
@@ -41,7 +41,7 @@ export function getActions(allData: string[]): IOperation[] {
             amount: Number(s.baseAmount) + (Number(s.tax) || 0),
             balance: Number(s.balance),
             ...pick(s, [
-                'card', 'datetime', 'operationType', 'currency', 'place',
+                'card', 'datetimeStr', 'operationType', 'currency', 'place',
             ]),
         }))
 }

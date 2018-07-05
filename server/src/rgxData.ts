@@ -29,7 +29,7 @@ export const rStuff = XRegExp(`
     ^
     (?<card> [a-zA-Z0-9]+)
     \\s
-    (?<datetime> ${sDatetime})
+    (?<datetimeStr> ${sDatetime})
     \\s
     (?<operationType> .*?)
     (
