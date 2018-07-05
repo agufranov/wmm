@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom'
 
 interface IAction {
@@ -9,6 +9,8 @@ interface IAction {
     card: string
     datetime: string
     place: string
+    isEmpty: boolean
+    raw: string
 }
 
 interface IState {
@@ -16,20 +18,29 @@ interface IState {
 }
 
 class Main extends React.Component<{}, IState> {
-    state: IState = {
-        data: []
+    public state: IState = {
+        data: [],
     }
 
     public async componentDidMount(): Promise<void> {
         const { data }: { data: IAction[] } = await axios.get('/api/get')
-        this.setState((s) => ({...s, data}))
+        this.setState((s: IState) => ({...s, data}))
     }
-    public render() {
+    public render(): ReactNode {
         return (
             <div>
-                {this.state.data.map((item) => (
-                    <div>{item.datetime} {item.amount}</div>
-                ))}
+                <table>
+                    <tbody>
+                        {
+                            this.state.data.map((item: IAction, i: number) => (
+                                <tr key={i}>
+                                    <td>{item.balance}</td>
+                                    <td>{item.card}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
             </div>
         )
     }
