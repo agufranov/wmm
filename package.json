@@ -1,0 +1,12 @@
+{
+  "name": "wmm",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently 'cd client && yarn start' 'cd server && yarn start'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^3.6.0"
+  }
+}

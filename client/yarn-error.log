@@ -1,0 +1,37 @@
+Arguments: 
+  /Users/agufranov/.nvm/versions/node/v8.11.2/bin/node /Users/agufranov/.nvm/versions/node/v8.11.2/bin/yarn add -D typescript tslint awesome-typescript-loader css-loader html-webpack-plugin style-loader webpack webpack-server
+
+PATH: 
+  /usr/local/share/android-sdk/platform-tools:/Users/agufranov/.nvm/versions/node/v8.11.2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  1.7.0
+
+Node version: 
+  8.11.2
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/typescript: ETIMEDOUT
+      at Timeout._onTimeout (/Users/agufranov/.nvm/versions/node/v8.11.2/lib/node_modules/yarn/lib/cli.js:135339:19)
+      at ontimeout (timers.js:498:11)
+      at tryOnTimeout (timers.js:323:5)
+      at Timer.listOnTimeout (timers.js:290:5)
+
+npm manifest: 
+  {
+    "name": "client",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "webpack-dev-server"
+    },
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
