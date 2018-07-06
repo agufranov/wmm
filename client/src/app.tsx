@@ -1,5 +1,5 @@
 import axios from 'axios'
-import _, { chain, groupBy, LoDashStatic, sumBy, map } from 'lodash'
+import _, { chain, groupBy, LoDashStatic, sumBy, map, range, sortBy } from 'lodash'
 import moment, { Moment } from 'moment'
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom'
@@ -43,10 +43,13 @@ class Main extends React.Component<{}, IState> {
         const { data }: { data: IOperation[] } = await axios.get('/api/get')
         this.setState((s: IState) => ({
             ...s,
-            data: data.map(d => ({
-                ...d,
-                datetime: moment(d.datetimeStr, 'DD.MM.YY HH:mm'),
-            })),
+            data: sortBy(
+                data.map(d => ({
+                    ...d,
+                    datetime: moment(d.datetimeStr, 'DD.MM.YY HH:mm'),
+                })),
+                (s) => s.datetime.valueOf(),
+            )
         }))
         window.data = data
     }
@@ -55,31 +58,31 @@ class Main extends React.Component<{}, IState> {
             <div>
                 {
                     chain(this.state.data)
-                        .zip([null, ...this.state.data])
+                        .zip([null, ...this.state.data], range(this.state.data.length))
                         .slice(0, -1)
-                        .groupBy<[IOperationExt, IOperationExt | null]>(([item, prevItem]) =>
+                        .groupBy<[IOperationExt, IOperationExt | null, number]>(([item, prevItem, i]) =>
                             item.datetime.clone().startOf('day').valueOf())
                         .map((itemsWithPrev, d) => {
                             const items = map(itemsWithPrev, '0')
                             return (<div key={d}>
-                                <h3>{moment(Number(d)).format('DD.MM.YYYY')} - {sumBy(items, 'amount')}</h3>
+                                <h3>{moment(Number(d)).format('DD.MM.YYYY')} [{sumBy(items, 'amount') / 100}]</h3>
                                 <table>
                                     <tbody>
                                         {
                                             itemsWithPrev.map((
-                                                [item, prevItem]: [IOperationExt, IOperationExt | null],
-                                                i: number,
+                                                [item, prevItem, i]: [IOperationExt, IOperationExt | null, number],
                                             ) => (
                                                 <tr key={i}>
+                                                    <td>{i}</td>
                                                     <td>{item.datetime.calendar()}</td>
                                                     <td>{item.datetimeStr}</td>
                                                     <td>{item.card}</td>
                                                     <td>{item.operationType}</td>
-                                                    <td>{item.amount}</td>
+                                                    <td>{item.amount / 100}</td>
                                                     <td>{item.currency}</td>
                                                     <td>{item.place}</td>
-                                                    <td>{item.balance}</td>
-                                                    <td>{(prevItem && (item.balance + item.amount !== prevItem.balance)) ? 'ERR' : ''}</td>
+                                                    <td>{item.balance / 100}</td>
+                                                    <td>{(prevItem && (item.balance - item.amount !== prevItem.balance)) ? `ERR ${item.balance} ${item.amount} ${prevItem.balance} ${JSON.stringify(prevItem)}` : ''}</td>
                                                 </tr>
                                             ))
                                         }

@@ -1,7 +1,7 @@
 import { chain, filter, includes, pick } from 'lodash'
 import XRegExp from 'xregexp'
 
-import { operationTypes, rCardStuffBalance, rStuff } from './rgxData'
+import { allOperationTypes, inOperationTypes, outOperationTypes, rCardStuffBalance, rStuff } from './rgxData'
 
 type RawOperation = Record<'card' | 'datetimeStr' | 'operationType' |
 'baseAmount' | 'currency' | 'tax' | 'place' | 'balance' | 'input', string>
@@ -31,17 +31,23 @@ export function getActions(allData: string[]): IOperation[] {
                 'currency', 'tax', 'place', 'balance', 'input',
             ],
         ) as RawOperation)
-        .map(s => {
-            if (!includes(operationTypes, s.operationType)) {
+        .map<IOperation>((s) => {
+            const absAmount = Math.round(Number(s.baseAmount) * 100) + Math.round(Number(s.tax) * 100 || 0)
+            if (isNaN(absAmount)) { throw new Error('Amount is NaN') }
+            let amount: number
+            if (includes(outOperationTypes, s.operationType)) {
+                amount = - absAmount
+            } else if (includes(inOperationTypes, s.operationType)) {
+                amount = absAmount
+            } else {
                 throw new Error(`Unknown operation type: [${s.operationType}] [${s.input}]`)
             }
-            return s
+            return {
+                amount,
+                balance: Math.round(Number(s.balance) * 100),
+                ...pick(s, [
+                    'card', 'datetimeStr', 'operationType', 'currency', 'place',
+                ]),
+            }
         })
-        .map<IOperation>((s) => ({
-            amount: Number(s.baseAmount) + (Number(s.tax) || 0),
-            balance: Number(s.balance),
-            ...pick(s, [
-                'card', 'datetimeStr', 'operationType', 'currency', 'place',
-            ]),
-        }))
 }
