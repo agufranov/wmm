@@ -11,6 +11,7 @@ import { groupOps, toOperationExt } from '../../util'
 export default connect(
     (state: StoreState): StateProps => {
         const data = state.main.data.map(toOperationExt)
+        // TODO reselect!
         return {
             data,
             dataByDay: groupOps('day', data),
