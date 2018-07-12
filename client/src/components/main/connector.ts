@@ -9,6 +9,7 @@ import MainComponent, { DispatchProps, StateProps } from '.'
 export default connect(
     (state: StoreState): StateProps => ({
         data: state.data,
+        dataByDay: state.dataByDay,
     }),
     (dispatch: ThunkDispatch<StoreState, void, FetchStart | FetchSuccess>): DispatchProps => ({
         fetch: () => dispatch(fetch()),

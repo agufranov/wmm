@@ -1,10 +1,15 @@
+import moment from 'moment'
+import { Dictionary, mapObjIndexed, pipe, values } from 'ramda'
+
 import React from 'react'
-import { OpDTO } from '../../typings'
+
+import { Op } from '../../typings'
 
 import './style.less'
 
 export interface StateProps {
-    data: OpDTO[]
+    data: Op[]
+    dataByDay: Dictionary<Op[]>
 }
 
 export interface DispatchProps {
@@ -20,13 +25,27 @@ export default class MainComponent extends React.Component<StateProps & Dispatch
     public render() {
         return (
             <div className="main">
-                {this.props.data.map((op, i) => (
-                    <div key={i} className="main--row">
-                        <div>{op.amount / 100}</div>
-                        <div>{op.balance / 100}</div>
-                    </div>
-                ))}
+                {pipe(
+                    mapObjIndexed((ops: Op[], timeStartStr) => {
+                        const timeStart = moment(Number(timeStartStr))
+                        return (
+                            <div key={timeStartStr}>
+                                <h4>{timeStart.format('DD MMM YYYY')}</h4>
+                                {ops.map(this.renderOp)}
+                            </div>
+                        )
+                    }),
+                    values,
+                )(this.props.dataByDay)}
             </div>
         )
     }
+
+    private renderOp = (op: Op, i: number) => (
+        <div key={i} className="main--row">
+            <div>{op.amount / 100}</div>
+            <div>{op.balance / 100}</div>
+            <div>{op.before / 100}</div>
+        </div>
+    )
 }

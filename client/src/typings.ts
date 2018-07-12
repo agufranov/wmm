@@ -1,3 +1,5 @@
+import { Moment } from 'moment'
+
 export interface OpDTO {
     amount: number
     balance: number
@@ -5,4 +7,10 @@ export interface OpDTO {
     currency: string
     datetimeStr: string
     operationType: string
+}
+
+export interface Op extends OpDTO {
+    before: number
+    datetime: Moment
+    timestamp: number
 }
