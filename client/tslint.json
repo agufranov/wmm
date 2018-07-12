@@ -44,6 +44,10 @@
         "no-bitwise": false,
         "align": false,
         "arrow-parens": false,
-        "no-null-keyword": false
+        "no-null-keyword": false,
+        "no-import-side-effect": false,
+        "interface-name": false,
+        "switch-default": false,
+        "no-default-export": false
     }
 }

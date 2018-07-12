@@ -6,6 +6,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.0",
     "@types/glob": "^5.0.35",
     "@types/lodash": "^4.14.110",
@@ -17,9 +18,12 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
+    "@types/mongoose": "^5.2.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "glob": "^7.1.2",
     "lodash": "^4.17.10",
+    "mongoose": "^5.2.2",
     "sqlite3": "^4.0.1",
     "xregexp": "^4.2.0"
   }

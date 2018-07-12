@@ -11,6 +11,7 @@ const proxyOptions = {
 };
 
 router.get('*', convert(proxy(proxyOptions)));
+router.post('*', convert(proxy(proxyOptions)));
 module.exports = {
     entry: './src/app.tsx',
     mode: 'development',
@@ -22,9 +23,9 @@ module.exports = {
                 loader: 'awesome-typescript-loader'
             },
             {
-                test: /\.css$/,
-                loader: 'style-loader!css-loader'
-            }
+                test: /\.less$/,
+                loader: 'style-loader!css-loader!less-loader'
+            },
         ]
     },
     resolve: {
