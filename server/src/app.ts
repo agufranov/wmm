@@ -4,9 +4,7 @@ import { filter, isEmpty, pick } from 'lodash'
 import { connect, model, Schema } from 'mongoose'
 
 import { getText } from './backupReader'
-import { getActions } from './rgx'
-
-process.on('SIGINT', () => { console.log("Bye bye!"); process.exit(); });
+import { getOperations } from './rgx'
 
 (async () => {
     const app = express()
@@ -40,7 +38,7 @@ process.on('SIGINT', () => { console.log("Bye bye!"); process.exit(); });
     console.log('places', await place.find())
 
     const texts = await getText()
-    const data = getActions(texts)
+    const data = getOperations(texts)
 
     app.get('/api/get', (req: Request, res: Response) => res.json(data))
 

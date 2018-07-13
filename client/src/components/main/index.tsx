@@ -5,6 +5,10 @@ import React from 'react'
 
 import { Op } from '../../typings'
 
+import Operation from '../operation'
+
+import { Card, CardContent, CardHeader } from '@material-ui/core'
+
 import './style.less'
 
 export interface StateProps {
@@ -13,12 +17,12 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-    fetch(): Promise<void>
+    fetchAll(): Promise<void>
 }
 
 export default class MainComponent extends React.Component<StateProps & DispatchProps> {
     public async componentDidMount() {
-        await this.props.fetch()
+        await this.props.fetchAll()
         console.log('Fetched', this.props.data.length)
     }
 
@@ -26,26 +30,27 @@ export default class MainComponent extends React.Component<StateProps & Dispatch
         return (
             <div className="main">
                 {pipe(
-                    mapObjIndexed((ops: Op[], timeStartStr) => {
-                        const timeStart = moment(Number(timeStartStr))
-                        return (
-                            <div key={timeStartStr}>
-                                <h4>{timeStart.format('DD MMM YYYY')}</h4>
-                                {ops.map(this.renderOp)}
-                            </div>
-                        )
-                    }),
+                    mapObjIndexed(this.renderGroup),
                     values,
                 )(this.props.dataByDay)}
             </div>
         )
     }
 
-    private renderOp = (op: Op, i: number) => (
-        <div key={i} className="main--row">
-            <div>{op.amount / 100}</div>
-            <div>{op.balance / 100}</div>
-            <div>{op.before / 100}</div>
-        </div>
-    )
+    // tslint:disable-next-line:arrow-return-shorthand
+    private renderGroup = (ops: Op[], timeStartStr: string) => {
+        return (
+            <Card key={timeStartStr}>
+                <CardHeader
+                    title={moment(Number(timeStartStr)).format('DD MMM YYYY')}
+                    subheader={timeStartStr}
+                />
+                <CardContent>
+                    {ops.map((op, i) => (
+                        <Operation key={i} operation={op}/>
+                    ))}
+                </CardContent>
+            </Card>
+        )
+    }
 }

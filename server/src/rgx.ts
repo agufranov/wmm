@@ -18,7 +18,7 @@ interface IOperation {
 
 const exec = (r: RegExp) => (s: string) => XRegExp.exec(s, r)
 
-export function getActions(allData: string[]): IOperation[] {
+export function getOperations(allData: string[]): IOperation[] {
     const strictMatchingData = chain(allData).map(exec(rStuff)).filter().value()
     const weakMatchingData = chain(allData).map(exec(rCardStuffBalance)).filter().value()
     console.log(`${strictMatchingData.length} strict, ${weakMatchingData.length} weak`)

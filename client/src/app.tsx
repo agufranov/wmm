@@ -6,9 +6,13 @@ import store from './redux/store'
 
 import MainComponent from './components/main/connector'
 
+import { CssBaseline } from '@material-ui/core'
+
 ReactDOM.render(
     <Provider store={store}>
-        <MainComponent/>
+        <CssBaseline>
+            <MainComponent/>
+        </CssBaseline>
     </Provider>,
     document.getElementById('react-root'),
 )

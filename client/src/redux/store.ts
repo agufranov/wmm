@@ -4,7 +4,7 @@ import { Action, applyMiddleware, combineReducers, createStore, Dispatch, Reduce
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 
-import { mainFetch, placesFetch } from './fetchers'
+import { categoriesFetch, mainFetch, placesFetch } from './fetchers'
 import { StoreState } from './StoreState'
 
 type ReducerStoreType<TR> = TR extends Reducer<infer TStore, infer TActions> ? TStore : null
@@ -15,9 +15,9 @@ const store = createStore<StoreState, any, void, void>(
     combineReducers({
         main: mainFetch.reducer,
         places: placesFetch.reducer,
+        categories: categoriesFetch.reducer,
     }),
     composeWithDevTools(applyMiddleware(thunkMiddleware)),
 )
-console.log(store)
 
 export default store

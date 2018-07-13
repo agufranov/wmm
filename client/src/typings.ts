@@ -7,6 +7,7 @@ export interface OpDTO {
     currency: string
     datetimeStr: string
     operationType: string
+    place: string
 }
 
 export interface Op extends OpDTO {

@@ -1,27 +1,39 @@
+import { chain } from 'lodash'
+import moment from 'moment'
+import R from 'ramda'
+
 import { connect } from 'react-redux'
 import { ThunkDispatch } from 'redux-thunk'
 
-import { fetch, FetchStart, FetchSuccess } from '../../redux/actions'
 import { StoreState } from '../../redux/StoreState'
 
 import MainComponent, { DispatchProps, StateProps } from '.'
-import { mainFetch, placesFetch } from '../../redux/fetchers'
+import { categoriesFetch, mainFetch, placesFetch } from '../../redux/fetchers'
 import { groupOps, toOperationExt } from '../../util'
 
 export default connect(
     (state: StoreState): StateProps => {
-        const data = state.main.data.map(toOperationExt)
+        const now = moment()
+        const data = chain(state.main.data)
+            .map(toOperationExt)
+            .orderBy('datetime', 'desc')
+            .takeWhile(d => now.diff(d.datetime.clone(), 'days') < 5)
+            .value()
         // TODO reselect!
         return {
             data,
             dataByDay: groupOps('day', data),
         }
     },
-    (dispatch: ThunkDispatch<StoreState, void, FetchStart | FetchSuccess>): DispatchProps => ({
+    // tslint:disable-next-line:no-any
+    (dispatch: ThunkDispatch<StoreState, void, any>): DispatchProps => ({
         // tslint:disable-next-line:arrow-return-shorthand
-        fetch: async () => {
-            await dispatch(mainFetch.action())
-            return dispatch(placesFetch.action())
+        fetchAll: async () => {
+            await Promise.all([
+                dispatch(mainFetch.action()),
+                dispatch(placesFetch.action()),
+                dispatch(categoriesFetch.action()),
+            ])
         },
     }),
 
