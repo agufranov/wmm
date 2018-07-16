@@ -1,13 +1,7 @@
-import { Dictionary } from 'lodash'
-
-import { Op, OpDTO } from '../typings'
+import { Category, Op, OpDTO, Place } from '../typings'
 import { FetchState } from './util/util'
 
-interface Place { name: string }
-
 export type PlacesState = FetchState<Place[]>
-
-interface Category { name: string }
 
 export type CategoriesState = FetchState<Category[]>
 

@@ -15,3 +15,6 @@ export interface Op extends OpDTO {
     datetime: Moment
     timestamp: number
 }
+
+export interface Place { name: string, _id: string }
+export interface Category { name: string, _id: string }

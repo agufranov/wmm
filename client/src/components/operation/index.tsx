@@ -4,6 +4,8 @@ import { Op } from '../../typings'
 
 import { Avatar, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core'
 
+import CategoriesMenu from '../categories-menu/connector'
+
 import './style.less'
 
 interface Props {
@@ -34,21 +36,12 @@ export default class OperationComponent extends React.Component<Props> {
                         onClick={this.openMenu}
                     />
                 </ListItem>
-                <Menu
+                <CategoriesMenu
                     anchorEl={this.state.menuAnchorEl}
                     open={Boolean(this.state.menuAnchorEl)}
                     onClose={this.closeMenu}
-                >
-                    <MenuItem>
-                        Item 1
-                    </MenuItem>
-                    <MenuItem selected>
-                        Item 2
-                    </MenuItem>
-                    <MenuItem>
-                        Item 3
-                    </MenuItem>
-                </Menu>
+                    onSelect={console.log}
+                />
             </div>
         )
     }
