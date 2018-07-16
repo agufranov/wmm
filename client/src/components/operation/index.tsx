@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Op } from '../../typings'
+import { Category, Op } from '../../typings'
 
 import { Avatar, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core'
 
@@ -8,7 +8,11 @@ import CategoriesMenu from '../categories-menu/connector'
 
 import './style.less'
 
-interface Props {
+export interface DispatchProps {
+    post(data: { name: string; categoryId: string }): Promise<void>
+}
+
+interface OwnProps {
     operation: Op
 }
 
@@ -17,7 +21,7 @@ interface State {
     x: number
 }
 
-export default class OperationComponent extends React.Component<Props> {
+export default class OperationComponent extends React.Component<DispatchProps & OwnProps> {
     public state: State = {
         menuAnchorEl: undefined,
         x: 2,
@@ -40,7 +44,7 @@ export default class OperationComponent extends React.Component<Props> {
                     anchorEl={this.state.menuAnchorEl}
                     open={Boolean(this.state.menuAnchorEl)}
                     onClose={this.closeMenu}
-                    onSelect={console.log}
+                    onSelect={this.post}
                 />
             </div>
         )
@@ -50,4 +54,11 @@ export default class OperationComponent extends React.Component<Props> {
         this.setState({ menuAnchorEl: e.currentTarget })
 
     private closeMenu = () => this.setState({ menuAnchorEl: undefined })
+
+    private post = (category: Category) => {
+        this.props.post({
+            name: this.props.operation.place,
+            categoryId: category._id,
+        })
+    }
 }

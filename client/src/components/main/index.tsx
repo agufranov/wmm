@@ -5,7 +5,7 @@ import React from 'react'
 
 import { Op } from '../../typings'
 
-import Operation from '../operation'
+import Operation from '../operation/connector'
 
 import { Card, CardContent, CardHeader } from '@material-ui/core'
 

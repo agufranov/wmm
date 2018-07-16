@@ -7,6 +7,7 @@ export interface StateProps {
     categories: Category[]
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface DispatchProps {
 }
 
