@@ -8,11 +8,15 @@ import CategoriesMenu from '../categories-menu/connector'
 
 import './style.less'
 
+export interface StateProps {
+    place?: string
+}
+
 export interface DispatchProps {
     post(data: { name: string; categoryId: string }): Promise<void>
 }
 
-interface OwnProps {
+export interface OwnProps {
     operation: Op
 }
 
@@ -21,7 +25,7 @@ interface State {
     x: number
 }
 
-export default class OperationComponent extends React.Component<DispatchProps & OwnProps> {
+export default class OperationComponent extends React.Component<StateProps & DispatchProps & OwnProps> {
     public state: State = {
         menuAnchorEl: undefined,
         x: 2,
@@ -36,7 +40,7 @@ export default class OperationComponent extends React.Component<DispatchProps & 
                     <ListItemText
                         className="operation--text"
                         primary={operation.amount / 100}
-                        secondary={operation.place}
+                        secondary={`${operation.place} [${this.props.place}]`}
                         onClick={this.openMenu}
                     />
                 </ListItem>

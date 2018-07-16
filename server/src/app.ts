@@ -63,9 +63,17 @@ import { getOperations } from './rgx'
 
     app.post('/api/places', async (req, res) => {
         try {
+            const existing = await place.findOne({ name: req.body.name })
+            if (existing) {
+                console.log('Existing')
+                await existing.update(req.body)
+            } else {
+                console.log('Create')
+                await place.create(req.body)
+            }
             res.json({
                 error: undefined,
-                data: await new place(req.body).save(),
+                data: true,
             })
         } catch (e) {
             res.json({ error: e })

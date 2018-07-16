@@ -1,4 +1,4 @@
-import { Category, Op, OpDTO, Place } from '../typings'
+import { Category, OpDTO, Place } from '../typings'
 import { FetchState } from './util/util'
 
 export type PlacesState = FetchState<Place[]>
